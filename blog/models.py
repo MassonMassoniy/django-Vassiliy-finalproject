@@ -16,8 +16,15 @@ class Post(models.Model):
         return self.title
 
 class AboutUs(models.Model):
-    pass
-    # TODO Ссылки на whatsapp, telegram URLField
-    # TODO Текст о нас 
+    wat_url = models.URLField(verbose_name=('Whatsapp ссылка'))
+    tg_url = models.URLField(verbose_name=('Telegram ссылка'))
+    about_txt = models.TextField(verbose_name=('Информационный текст'))
+
+    class Meta:
+        verbose_name='About'
+        verbose_name_plural='About'
+
+    def __str__(self):
+        return self.about_txt
 
 # Create your models here.

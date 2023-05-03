@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from blog.models import Post
+from blog.models import Post, AboutUs
 
 
 def index(request):
@@ -8,8 +8,8 @@ def index(request):
 
 
 def about(request):
-    # AboutUs.objects.last()
+    about = AboutUs.objects.last()
     # AboutUs.objects.get()
     # AboutUs.objects.filter()
-    return render(request,'about.html')
+    return render(request,'about.html',{'about':about})
 # Create your views here.
