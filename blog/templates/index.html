@@ -53,7 +53,7 @@
               <h1 class="display-4 fst-italic">{{posts.last.title}}</h1>
               <p class="lead my-3">{{posts.last.text}}</p>
               <p class="mb-2 text-body-emphasis">{{posts.last.user}} ({{posts.last.date_post}})</p>
-              <p class="lead mb-0"><a href="#" class="text-white fw-bold">Continue reading...</a></p>
+              <p class="lead mb-0"><a href="{% url 'single' pk=posts.last.pk %}" class="text-white fw-bold">Continue reading...</a></p>
             </div>
         </div>
 
