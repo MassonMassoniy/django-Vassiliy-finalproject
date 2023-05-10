@@ -9,15 +9,17 @@ class Post(models.Model):
     date_post=models.DateTimeField(default=timezone.now,verbose_name='Дата создания поста')
 
     class Meta:
-        verbose_name='Пост'
-        verbose_name_plural='Посты'
+        verbose_name='Post'
+        verbose_name_plural='Posts'
 
     def __str__(self) -> str:
         return self.title
 
 class AboutUs(models.Model):
     wat_url = models.URLField(verbose_name=('Whatsapp ссылка'))
+    wat_txt = models.TextField(verbose_name=('Имя контакта'))
     tg_url = models.URLField(verbose_name=('Telegram ссылка'))
+    tg_txt = models.TextField(verbose_name=('Имя контакта'))
     about_txt = models.TextField(verbose_name=('Информационный текст'))
 
     class Meta:
