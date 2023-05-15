@@ -1,9 +1,9 @@
 Django
 Pillow
+django-jazzmin
 django-filter
 djangorestframework
 djangorestframework-simplejwt
-django-jazzmin
 drf-spectacular
 drf-spectacular-sidecar
 django-rest-swagger
