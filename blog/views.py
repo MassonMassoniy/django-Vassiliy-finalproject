@@ -3,6 +3,13 @@ from blog.models import Post, AboutUs
 from blog.forms import PostForm
 from django.shortcuts import redirect
 from django.utils import timezone
+from rest_framework.viewsets import ModelViewSet
+from .serializers import PostSerializer
+from .models import Post
+
+class PostViewSet(ModelViewSet):
+    serializer_class = PostSerializer
+    queryset = Post.objects.all()
 
 def index(request):
     ls=Post.objects.all()
