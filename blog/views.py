@@ -1,15 +1,57 @@
 from django.shortcuts import render, get_object_or_404
-from blog.models import Post, AboutUs
+from blog.models import Post, AboutUs, User
 from blog.forms import PostForm
 from django.shortcuts import redirect
 from django.utils import timezone
-from rest_framework.viewsets import ModelViewSet
-from .serializers import PostSerializer
-from .models import Post
+from rest_framework import generics
+#from django.contrib.auth.models import User
+from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from blog.serializers import TokenObtainPairSerializer, TokenRefreshSerializer, UserSerializer, GetUserSerializer, PostSerializer
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework_simplejwt.views import (
+    TokenObtainSlidingView,
+    TokenRefreshSlidingView,
+)
+from rest_framework.viewsets import ModelViewSet, GenericViewSet, mixins
+from rest_framework.response import Response
+from rest_framework import status
 
-class PostViewSet(ModelViewSet):
-    serializer_class = PostSerializer
-    queryset = Post.objects.all()
+class PostView(ModelViewSet):
+    serializer_class=PostSerializer
+    queryset=Post.objects.all()
+    filter_backends=[DjangoFilterBackend]
+    filterset_fields = ['title', 'text']
+
+    def get_permissions(self):
+        if self.action in ['list','retrieve']:
+            self.permission_classes=[AllowAny]
+        else:
+            self.permission_classes=[IsAdminUser]
+        return super(self.__class__, self).get_permissions()
+
+class TokenObtainPairView(TokenObtainSlidingView):
+    permission_classes=[AllowAny]
+    serializer_class=TokenObtainPairSerializer
+
+class TokenRefreshView(TokenRefreshSlidingView):
+    permission_classes=[AllowAny]
+    serializer_class=TokenRefreshSerializer
+
+class RegisterView(GenericViewSet, mixins.CreateModelMixin):
+    permission_classes=[AllowAny]
+    serializer_class=UserSerializer
+
+class UserView(ModelViewSet):
+    permission_classes=[IsAuthenticated]
+    serializer_class=GetUserSerializer
+    queryset=User.objects.all()
+
+    def get_permissions(self):
+        return super().get_permissions()
+
+    def get_current_user(self,request,*args,**kwargs):
+        serializer=self.get_serializer(request.user)
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
 
 def index(request):
     ls=Post.objects.all()
