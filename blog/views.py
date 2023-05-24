@@ -3,9 +3,8 @@ from blog.models import Post, AboutUs, User
 from blog.forms import PostForm
 from django.shortcuts import redirect
 from django.utils import timezone
-from rest_framework import generics
-#from django.contrib.auth.models import User
-from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
+from rest_framework.generics import ListAPIView
+from rest_framework.permissions import *
 from blog.serializers import TokenObtainPairSerializer, TokenRefreshSerializer, UserSerializer, GetUserSerializer, PostSerializer
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework_simplejwt.views import (
@@ -15,6 +14,41 @@ from rest_framework_simplejwt.views import (
 from rest_framework.viewsets import ModelViewSet, GenericViewSet, mixins
 from rest_framework.response import Response
 from rest_framework import status
+from .permissions import *
+
+'--------------------------------------------------------------------------------------------------'
+
+class CourierView(ListAPIView):
+    permission_classes=[IsAuthenticated, IsCourier]
+
+    def get(self, request, *args, **kwargs):
+        return Response(data={'success':'You are a Courier'})
+    
+class SellerView(ListAPIView):
+    permission_classes=[IsAuthenticated, IsSeller]
+
+    def get(self, request, *args, **kwargs):
+        return Response(data={'success':'You are a Seller'})
+    
+class AssemblerView(ListAPIView):
+    permission_classes=[IsAuthenticated, IsAssembler]
+
+    def get(self, request, *args, **kwargs):
+        return Response(data={'success':'You are an Assembler'})
+    
+class CustomerView(ListAPIView):
+    permission_classes=[IsAuthenticated, IsCustomer]
+
+    def get(self, request, *args, **kwargs):
+        return Response(data={'success':'You are a Customer'})
+    
+class AdminView(ListAPIView):
+    permission_classes=[IsAuthenticated, IsAdmin]
+
+    def get(self, request, *args, **kwargs):
+        return Response(data={'success':'You are an Admin'})
+
+'--------------------------------------------------------------------------------------------------'
 
 class PostView(ModelViewSet):
     serializer_class=PostSerializer
